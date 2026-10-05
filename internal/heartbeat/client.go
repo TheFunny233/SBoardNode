@@ -28,9 +28,26 @@ type Payload struct {
 	XrayPorts            []int     `json:"xray_ports"`
 	RestartCount         uint64    `json:"restart_count"`
 	XrayMessage          *string   `json:"xray_message,omitempty"`
+	XrayNodes            []XrayNode `json:"xray_nodes"`
 	AppliedConfigVersion int       `json:"applied_config_version"`
 	AppliedConfigHash    *string   `json:"applied_config_hash,omitempty"`
 	Capabilities         []string  `json:"capabilities"`
+}
+
+// XrayNode contains only public connection metadata. Private keys are never
+// sent to the panel.
+type XrayNode struct {
+	Tag       string `json:"tag,omitempty"`
+	Protocol  string `json:"protocol"`
+	Port      int    `json:"port"`
+	Network   string `json:"network,omitempty"`
+	Security  string `json:"security,omitempty"`
+	UUID      string `json:"uuid,omitempty"`
+	Cipher    string `json:"cipher,omitempty"`
+	Flow      string `json:"flow,omitempty"`
+	SNI       string `json:"sni,omitempty"`
+	PublicKey string `json:"public_key,omitempty"`
+	ShortID   string `json:"short_id,omitempty"`
 }
 
 type Response struct {

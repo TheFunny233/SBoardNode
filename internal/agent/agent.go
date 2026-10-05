@@ -71,6 +71,22 @@ func (a *Agent) sendHeartbeat(ctx context.Context) error {
 		return err
 	}
 	status := a.xray.Status()
+	xrayNodes := make([]heartbeat.XrayNode, 0)
+	for _, node := range a.xray.Nodes() {
+		xrayNodes = append(xrayNodes, heartbeat.XrayNode{
+			Tag:       node.Tag,
+			Protocol:  node.Protocol,
+			Port:      node.Port,
+			Network:   node.Network,
+			Security:  node.Security,
+			UUID:      node.UUID,
+			Cipher:    node.Cipher,
+			Flow:      node.Flow,
+			SNI:       node.SNI,
+			PublicKey: node.PublicKey,
+			ShortID:   node.ShortID,
+		})
+	}
 	a.sequence++
 	if snapshot.UptimeSeconds > a.sequence {
 		a.sequence = snapshot.UptimeSeconds
@@ -102,8 +118,9 @@ func (a *Agent) sendHeartbeat(ctx context.Context) error {
 		XrayPorts:            status.Ports,
 		RestartCount:         status.RestartCount,
 		XrayMessage:          message,
+		XrayNodes:            xrayNodes,
 		AppliedConfigVersion: 0,
-		Capabilities:         []string{"heartbeat", "xray-monitor", "xray-restart"},
+		Capabilities:         []string{"heartbeat", "xray-monitor", "xray-restart", "xray-discovery"},
 	})
 	if err != nil {
 		return err

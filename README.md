@@ -11,8 +11,12 @@ SBoardNode 是 SBoard 的极轻量 Linux 边缘 Agent。它只使用 Go 标准�
 - 重启操作带 60 秒冷却，避免服务异常时形成重启风暴
 - 支持 Alpine Linux/OpenRC 和 Debian/systemd
 - 支持 `GOMEMLIMIT` 与 `GOGC`
+- 首次安装默认同时安装 Xray，并生成一个 VLESS + Reality TCP 入站；已有 Xray 配置会被保留
+- Agent 心跳会上报 Xray 入站的公开连接信息，不会上报 Reality 私钥
 
 配置同步和 Xray API 流量统计保留到后续版本。
+
+安装器可以通过 `--xray-port`、`--reality-sni`、`--reality-dest`、`--xray-uuid` 和 `--no-xray` 覆盖 Xray 行为。默认 Reality SNI 为 `www.cloudflare.com`，也可以通过 `SBOARD_REALITY_SNI` 环境变量指定。已有 `/etc/xray/config.json` 时安装器不会覆盖配置，只会校验并启动 Xray 服务。
 
 ## 配置
 
@@ -56,7 +60,7 @@ Token 作为参数时可能被 shell 历史记录保存，交互式输入更安�
 指定版本：
 
 ```sh
-sudo sh install.sh --version v0.1.0
+sudo sh install.sh --version v0.2.0
 ```
 
 ## 内存调优
