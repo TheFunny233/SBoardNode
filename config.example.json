@@ -1,0 +1,6 @@
+{
+  "server": "https://sboard.example.com",
+  "node_id": "paste-node-id-here",
+  "token": "paste-agent-token-here",
+  "heartbeat_interval": 60
+}

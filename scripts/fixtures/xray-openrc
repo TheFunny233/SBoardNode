@@ -1,0 +1,6 @@
+#!/sbin/openrc-run
+
+description="SBoardNode acceptance Xray fixture"
+command="/usr/local/bin/xray"
+command_background=true
+pidfile="/run/xray.pid"
